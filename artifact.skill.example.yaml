@@ -1,0 +1,43 @@
+apiVersion: agentx/v1
+kind: skill
+type: skill
+version: 0.1.0
+metadata:
+  name: review-playbook
+  slug: review-playbook
+  summary: Team review checklist skill
+  description: Helps the agent run a consistent code review checklist for pull requests.
+  ownerTeam: platform
+  tags:
+    - review
+    - quality
+spec:
+  format: SKILL.md
+  entrypoint: SKILL.md
+  triggers:
+    - manual
+    - recommended
+  requiredContext:
+    - diff
+    - changed-files
+  outputTargets:
+    - cursor
+    - claude_code
+compatibility:
+  agents:
+    - cursor
+    - claude_code
+  os:
+    - darwin
+    - linux
+  arch:
+    - arm64
+    - x64
+dependencies: []
+security:
+  riskLevel: low
+  requiresReview: true
+  requiresApprovalToRun: false
+distribution:
+  packageUri: ./artifact-packages/review-playbook
+  checksums: {}

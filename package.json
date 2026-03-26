@@ -1,0 +1,31 @@
+{
+  "name": "agentx-platform",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev:api": "npm --workspace @agentx/api run dev",
+    "dev:web": "npm --workspace @agentx/web run dev",
+    "dev:cli": "npm --workspace @agentx/cli run dev",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down -v",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run build && npm run test:api && npm run test:cli && npm run test:web",
+    "test:api": "node --import tsx --test tests/api.smoke.test.ts",
+    "test:cli": "node --import tsx --test tests/cli.smoke.test.ts",
+    "test:web": "playwright test",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.2"
+  }
+}

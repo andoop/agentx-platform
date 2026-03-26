@@ -1,0 +1,16 @@
+---
+description: Review playbook for AgentX-installed pull request reviews
+globs:
+alwaysApply: false
+---
+
+# Review Playbook
+
+## Goals
+- Find bugs, regressions, security issues, and missing tests first.
+- Keep the summary brief after the findings.
+
+## Checklist
+- Verify the change matches the stated intent.
+- Look for broken edge cases and backward-compatibility risks.
+- Call out tests that should exist but do not.

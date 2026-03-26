@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model WorkspaceMember {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  team         String
+  roles        Json
+  passwordHash String
+  disabledAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@map("workspace_members")
+}
+
+model Artifact {
+  id             String          @id @default(uuid())
+  type           String
+  slug           String          @unique
+  name           String
+  summary        String
+  description    String
+  ownerTeam      String
+  visibility     String
+  status         String
+  currentVersion String?
+  tags           Json
+  labels         Json
+  createdBy      String?
+  updatedBy      String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  versions       ArtifactVersion[]
+  reviews        ReviewRequest[]
+  installEvents  InstallEvent[]
+
+  @@map("artifacts")
+}
+
+model ArtifactVersion {
+  id        String   @id @default(uuid())
+  artifactId String
+  artifact   Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+  version   String
+  manifest  Json
+  packageUri String?
+  checksums Json
+  createdBy String?
+  createdAt DateTime @default(now())
+
+  @@unique([artifactId, version])
+  @@map("artifact_versions")
+}
+
+model ReviewRequest {
+  id          String   @id @default(uuid())
+  artifactId  String
+  artifact    Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+  version     String
+  submittedBy String
+  reviewer    String?
+  status      String
+  notes       String?
+  submittedAt DateTime @default(now())
+  decidedAt   DateTime?
+
+  @@map("review_requests")
+}
+
+model InstallEvent {
+  id              String   @id @default(uuid())
+  artifactId      String
+  artifact        Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+  version         String
+  installedBy     String?
+  targetAgent     String
+  targetWorkspace String?
+  createdAt       DateTime @default(now())
+
+  @@map("install_events")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  action     String
+  actor      String
+  resourceType String
+  resourceId String?
+  metadata   Json
+  createdAt  DateTime @default(now())
+
+  @@map("audit_logs")
+}

@@ -1,0 +1,53 @@
+apiVersion: agentx/v1
+kind: mcp_server
+type: mcp_server
+version: 0.1.0
+metadata:
+  name: github-mcp
+  slug: github-mcp
+  summary: GitHub MCP server for internal engineering workflows
+  description: Exposes GitHub tools and prompts to internal AI agents.
+  ownerTeam: platform
+  tags:
+    - github
+    - engineering
+  labels:
+    tier: core
+spec:
+  transport: stdio
+  installMethod: custom
+  entrypoint: bin/server.js
+  args: []
+  envSchema:
+    GITHUB_TOKEN: required
+  tools:
+    - list_pull_requests
+    - get_pull_request
+  resources: []
+  prompts: []
+  auth:
+    type: api_key
+compatibility:
+  agents:
+    - cursor
+    - claude_code
+  os:
+    - darwin
+    - linux
+  arch:
+    - arm64
+    - x64
+dependencies:
+  - type: env
+    target: GITHUB_TOKEN
+security:
+  riskLevel: medium
+  requiresReview: true
+  requiresApprovalToRun: false
+  allowedHosts:
+    - api.github.com
+  requiredSecrets:
+    - GITHUB_TOKEN
+distribution:
+  packageUri: ./artifact-packages/github-mcp
+  checksums: {}

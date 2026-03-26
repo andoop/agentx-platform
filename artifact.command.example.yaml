@@ -1,0 +1,43 @@
+apiVersion: agentx/v1
+kind: command
+type: command
+version: 0.1.0
+metadata:
+  name: release-summary
+  slug: release-summary
+  summary: Generate a release summary command
+  description: Produces a structured release note draft from merged PRs and key changes.
+  ownerTeam: platform
+  tags:
+    - command
+    - release
+spec:
+  commandType: slash
+  entrypoint: command.md
+  runtime: none
+  argumentsSchema:
+    milestone:
+      type: string
+      required: true
+    includeRisks:
+      type: boolean
+      required: false
+  executionMode: readonly
+compatibility:
+  agents:
+    - cursor
+    - claude_code
+  os:
+    - darwin
+    - linux
+  arch:
+    - arm64
+    - x64
+dependencies: []
+security:
+  riskLevel: low
+  requiresReview: true
+  requiresApprovalToRun: false
+distribution:
+  packageUri: ./artifact-packages/release-summary
+  checksums: {}

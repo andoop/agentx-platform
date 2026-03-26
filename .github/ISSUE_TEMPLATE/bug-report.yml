@@ -1,0 +1,39 @@
+name: Bug report / 缺陷反馈
+description: Report a reproducible problem in AgentX / 提交 AgentX 中可复现的问题
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary / 问题概述
+      description: What happened? / 发生了什么？
+      placeholder: A clear and concise description of the bug. / 请简要清晰地描述这个问题。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps / 复现步骤
+      description: How can we reproduce the issue? / 如何复现这个问题？
+      placeholder: |
+        1. Start the API / 启动 API
+        2. Open /publish / 打开 /publish
+        3. Submit a command / 提交一个 command
+        4. Observe the failure / 观察失败现象
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior / 预期行为
+      placeholder: What should have happened? / 你期望发生什么？
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 环境信息
+      description: Node version, OS, browser, and any relevant config / Node 版本、操作系统、浏览器及相关配置
+      placeholder: Node 20, macOS, Chrome 135, file repository mode / 例如 Node 20、macOS、Chrome 135、文件仓储模式

@@ -1,0 +1,70 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-agentx}
+      POSTGRES_USER: ${POSTGRES_USER:-agentx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-agentx}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-agentx}:${POSTGRES_PASSWORD:-agentx}@postgres:5432/${POSTGRES_DB:-agentx}
+      AGENTX_JWT_SECRET: ${AGENTX_JWT_SECRET:-change-me-in-production}
+      AGENTX_DEMO_PASSWORD: ${AGENTX_DEMO_PASSWORD:-agentx123}
+      PORT: 4000
+    command: sh -c "npm --workspace @agentx/api run db:push && npm --workspace @agentx/api run start"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    ports:
+      - "${AGENTX_API_PORT:-4000}:4000"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      AGENTX_API_URL: http://api:4000
+      NEXT_TELEMETRY_DISABLED: 1
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/login').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    ports:
+      - "${AGENTX_WEB_PORT:-3000}:3000"
+
+volumes:
+  postgres-data:

@@ -1,0 +1,33 @@
+name: Feature request / 功能建议
+description: Propose a new capability or workflow for AgentX / 为 AgentX 提出新的能力或工作流建议
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / 问题
+      description: What problem are you trying to solve? / 你希望解决什么问题？
+      placeholder: Describe the user pain point or missing workflow. / 请描述当前痛点或缺失的工作流。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution / 期望方案
+      description: What would you like AgentX to do? / 你希望 AgentX 具备什么能力？
+      placeholder: Describe the desired behavior. / 请描述期望的行为或设计。
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered / 已考虑的替代方案
+      description: What are you doing today instead? / 你当前是如何绕过这个问题的？
+      placeholder: Existing workaround, manual process, or competing approach. / 当前的替代方案、手工流程或竞品做法。
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context / 补充信息
+      description: Any architectural notes, examples, or references / 任何架构说明、示例或参考资料
