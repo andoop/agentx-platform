@@ -99,6 +99,22 @@ export function getApiBaseUrl() {
   return apiBaseUrl;
 }
 
+export type AgentXHealth = {
+  ok: boolean;
+  service: string;
+  repositoryMode?: string;
+};
+
+export async function getSystemHealth(): Promise<AgentXHealth> {
+  const response = await fetch(`${apiBaseUrl}/health`, {
+    cache: "no-store"
+  });
+  if (!response.ok) {
+    throw new Error(`Health request failed with status ${response.status}`);
+  }
+  return (await response.json()) as AgentXHealth;
+}
+
 export async function loginWithPassword(email: string, password: string): Promise<AuthSession> {
   return new AgentXClient(apiBaseUrl).login(email, password);
 }
