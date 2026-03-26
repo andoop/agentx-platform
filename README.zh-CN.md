@@ -5,11 +5,14 @@
 ![状态：Alpha](https://img.shields.io/badge/status-alpha-f59e0b)
 ![许可证：Apache--2.0](https://img.shields.io/badge/license-Apache--2.0-2563eb)
 ![文档：EN/ZH](https://img.shields.io/badge/docs-EN%20%7C%20ZH-16a34a)
+![npm](https://img.shields.io/npm/v/agentc?color=cb3837)
+![GitHub Release](https://img.shields.io/github/v/release/andoop/agentx-platform?color=7c3aed)
 
 快速入口：
 [5 分钟体验](#5-分钟体验) |
 [CLI 安装](#cli-安装) |
 [文档总览](./docs/README.zh-CN.md) |
+[更新日志](./CHANGELOG.md) |
 [参与贡献](./CONTRIBUTING.zh-CN.md) |
 [安全策略](./SECURITY.zh-CN.md)
 
@@ -120,9 +123,20 @@ npm run dev:web
 
 ## CLI 安装
 
-CLI 现在已经按标准 npm CLI 的方式完成打包配置。
+CLI 已经发布到 npm，可以直接安装：
 
-在首个公开 npm 版本发布之前，你可以先在本地打包：
+```bash
+npm install -g agentc
+agentc --help
+```
+
+旧的 `agentx` 命令仍然保留，作为兼容别名：
+
+```bash
+agentx --help
+```
+
+如果你想在发布前测试本地构建，也仍然可以手动打包：
 
 ```bash
 npm install
@@ -135,8 +149,6 @@ npm run pack:cli
 npm install -g ./apps/cli/agentc-0.1.1.tgz
 agentc --help
 ```
-
-旧的 `agentx` 命令会继续保留，作为兼容别名。
 
 如果你在做本地开发，也仍然可以继续源码运行：
 

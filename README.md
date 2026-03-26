@@ -5,11 +5,14 @@
 ![Status: Alpha](https://img.shields.io/badge/status-alpha-f59e0b)
 ![License: Apache--2.0](https://img.shields.io/badge/license-Apache--2.0-2563eb)
 ![Docs: EN/ZH](https://img.shields.io/badge/docs-EN%20%7C%20ZH-16a34a)
+![npm](https://img.shields.io/npm/v/agentc?color=cb3837)
+![GitHub Release](https://img.shields.io/github/v/release/andoop/agentx-platform?color=7c3aed)
 
 Quick Links:
 [5-Minute Trial](#5-minute-trial) |
 [CLI Installation](#cli-installation) |
 [Docs Index](./docs/README.md) |
+[Changelog](./CHANGELOG.md) |
 [Contributing](./CONTRIBUTING.md) |
 [Security](./SECURITY.md)
 
@@ -120,9 +123,20 @@ Then try this flow:
 
 ## CLI Installation
 
-The CLI is now packaged as a standard npm CLI.
+The CLI is available on npm:
 
-Until the first public npm release is published, you can build and pack it locally:
+```bash
+npm install -g agentc
+agentc --help
+```
+
+The legacy `agentx` command remains available as a compatibility alias:
+
+```bash
+agentx --help
+```
+
+If you want to test a local build before publishing, you can still build and pack it manually:
 
 ```bash
 npm install
@@ -135,8 +149,6 @@ Then install the generated tarball globally:
 npm install -g ./apps/cli/agentc-0.1.1.tgz
 agentc --help
 ```
-
-The legacy `agentx` command remains available as a compatibility alias.
 
 For local development, you can still run it from source:
 
