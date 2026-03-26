@@ -6,6 +6,7 @@ import {
   getMembers,
   getPersistenceBackups,
   getPersistenceInfo,
+  getSystemHealth,
   requireCurrentActorFor
 } from "../../lib/api";
 import {
@@ -35,18 +36,27 @@ export default async function SettingsPage() {
 
   const auditLogs = await getAuditLogs();
   const members = await getMembers();
-  const persistenceInfo = await getPersistenceInfo();
-  const exportState = await exportPersistenceState();
-  const backups = await getPersistenceBackups();
-  const previewState = {
-    ...exportState,
-    members: exportState.members.map((member) =>
-      typeof member === "object" && member !== null && "passwordHash" in member
-        ? Object.fromEntries(Object.entries(member).filter(([key]) => key !== "passwordHash"))
-        : member
-    )
-  };
-  const localizedPreviewState = localizeDisplayData(previewState, locale);
+  const health = await getSystemHealth();
+  const persistenceAdminAvailable = health.repositoryMode === "file";
+
+  let persistenceInfo: Awaited<ReturnType<typeof getPersistenceInfo>> | null = null;
+  let backups: Awaited<ReturnType<typeof getPersistenceBackups>> = [];
+  let localizedPreviewState: unknown = null;
+
+  if (persistenceAdminAvailable) {
+    persistenceInfo = await getPersistenceInfo();
+    const exportState = await exportPersistenceState();
+    backups = await getPersistenceBackups();
+    const previewState = {
+      ...exportState,
+      members: exportState.members.map((member) =>
+        typeof member === "object" && member !== null && "passwordHash" in member
+          ? Object.fromEntries(Object.entries(member).filter(([key]) => key !== "passwordHash"))
+          : member
+      )
+    };
+    localizedPreviewState = localizeDisplayData(previewState, locale);
+  }
 
   return (
     <PageShell title={t.settings.title} subtitle={t.settings.subtitle}>
@@ -114,75 +124,83 @@ export default async function SettingsPage() {
         </div>
       </SectionCard>
 
-      <SectionCard title={t.settings.persistence}>
-        <div style={{ display: "grid", gap: 12 }}>
-          <div>
-            {t.settings.dataFile}: {persistenceInfo.dataFilePath}
-          </div>
-          <div>
-            {t.settings.backupDir}: {persistenceInfo.backupDirectory}
-          </div>
-          <div>
-            {locale === "zh"
-              ? `资源 ${persistenceInfo.artifactCount} 个，审核 ${persistenceInfo.reviewCount} 条`
-              : `${persistenceInfo.artifactCount} artifacts, ${persistenceInfo.reviewCount} reviews`}
-          </div>
-        </div>
-      </SectionCard>
-
-      <SectionCard title={t.settings.createBackup}>
-        <PersistenceBackupForm />
-      </SectionCard>
-
-      <SectionCard title={t.settings.downloadExport}>
-        <PersistenceExportLink />
-      </SectionCard>
-
-      <SectionCard title={t.settings.importState}>
-        <PersistenceImportForm />
-      </SectionCard>
-
-      <SectionCard title={t.settings.backups}>
-        <div style={{ display: "grid", gap: 12 }}>
-          {backups.length === 0 ? (
-            <div>{t.settings.noBackups}</div>
-          ) : (
-            backups.map((backup) => (
-              <div
-                key={backup.fileName}
-                style={{
-                  background: "#f9fafb",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: 12,
-                  padding: 14
-                }}
-              >
-                <div style={{ fontWeight: 600 }}>{backup.fileName}</div>
-                <div>{formatDateTime(backup.createdAt, locale)}</div>
-                <div>
-                  {formatNumber(backup.sizeBytes, locale)} {t.common.bytes}
-                </div>
-                <div>{backup.backupPath}</div>
+      {persistenceAdminAvailable && persistenceInfo ? (
+        <>
+          <SectionCard title={t.settings.persistence}>
+            <div style={{ display: "grid", gap: 12 }}>
+              <div>
+                {t.settings.dataFile}: {persistenceInfo.dataFilePath}
               </div>
-            ))
-          )}
-        </div>
-      </SectionCard>
+              <div>
+                {t.settings.backupDir}: {persistenceInfo.backupDirectory}
+              </div>
+              <div>
+                {locale === "zh"
+                  ? `资源 ${persistenceInfo.artifactCount} 个，审核 ${persistenceInfo.reviewCount} 条`
+                  : `${persistenceInfo.artifactCount} artifacts, ${persistenceInfo.reviewCount} reviews`}
+              </div>
+            </div>
+          </SectionCard>
 
-      <SectionCard title={t.settings.exportPreview}>
-        <pre
-          style={{
-            background: "#111827",
-            borderRadius: 12,
-            color: "#f9fafb",
-            maxHeight: 320,
-            overflow: "auto",
-            padding: 16
-          }}
-        >
-          {JSON.stringify(localizedPreviewState, null, 2)}
-        </pre>
-      </SectionCard>
+          <SectionCard title={t.settings.createBackup}>
+            <PersistenceBackupForm />
+          </SectionCard>
+
+          <SectionCard title={t.settings.downloadExport}>
+            <PersistenceExportLink />
+          </SectionCard>
+
+          <SectionCard title={t.settings.importState}>
+            <PersistenceImportForm />
+          </SectionCard>
+
+          <SectionCard title={t.settings.backups}>
+            <div style={{ display: "grid", gap: 12 }}>
+              {backups.length === 0 ? (
+                <div>{t.settings.noBackups}</div>
+              ) : (
+                backups.map((backup) => (
+                  <div
+                    key={backup.fileName}
+                    style={{
+                      background: "#f9fafb",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: 12,
+                      padding: 14
+                    }}
+                  >
+                    <div style={{ fontWeight: 600 }}>{backup.fileName}</div>
+                    <div>{formatDateTime(backup.createdAt, locale)}</div>
+                    <div>
+                      {formatNumber(backup.sizeBytes, locale)} {t.common.bytes}
+                    </div>
+                    <div>{backup.backupPath}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </SectionCard>
+
+          <SectionCard title={t.settings.exportPreview}>
+            <pre
+              style={{
+                background: "#111827",
+                borderRadius: 12,
+                color: "#f9fafb",
+                maxHeight: 320,
+                overflow: "auto",
+                padding: 16
+              }}
+            >
+              {JSON.stringify(localizedPreviewState, null, 2)}
+            </pre>
+          </SectionCard>
+        </>
+      ) : (
+        <SectionCard title={t.settings.persistence}>
+          {t.settings.persistenceUnavailable}
+        </SectionCard>
+      )}
 
       <SectionCard title={t.settings.auditLogs}>
         <div style={{ display: "grid", gap: 12 }}>

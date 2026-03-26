@@ -1,8 +1,10 @@
-import { exportPersistenceState, getCurrentActor } from "../../../lib/api";
+import { exportPersistenceState, getCurrentActor, getSystemHealth } from "../../../lib/api";
+import { getMessages } from "../../../lib/i18n";
 import { getLocale } from "../../../lib/i18n-server";
 
 export async function GET() {
   const locale = await getLocale();
+  const t = getMessages(locale);
   const current = await getCurrentActor();
   if (!current) {
     return new Response(JSON.stringify({ message: locale === "zh" ? "需要先登录" : "Authentication required" }), {
@@ -16,6 +18,16 @@ export async function GET() {
   if (!current.permissions.canAdmin) {
     return new Response(JSON.stringify({ message: locale === "zh" ? "无权访问" : "Forbidden" }), {
       status: 403,
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      }
+    });
+  }
+
+  const health = await getSystemHealth();
+  if (health.repositoryMode !== "file") {
+    return new Response(JSON.stringify({ message: t.settings.persistenceUnavailable }), {
+      status: 409,
       headers: {
         "content-type": "application/json; charset=utf-8"
       }
