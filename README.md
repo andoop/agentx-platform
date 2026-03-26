@@ -8,7 +8,7 @@
 
 Quick Links:
 [5-Minute Trial](#5-minute-trial) |
-[Source-Run CLI](#source-run-cli) |
+[CLI Installation](#cli-installation) |
 [Docs Index](./docs/README.md) |
 [Contributing](./CONTRIBUTING.md) |
 [Security](./SECURITY.md)
@@ -21,7 +21,7 @@ It gives you one place to publish, review, approve, version, and install:
 - `Skill`
 - `Command`
 
-AgentX ships with a Web console, Registry API, source-run CLI, and local adapters for Cursor and Claude Code.
+AgentX ships with a Web console, Registry API, packaged CLI tooling, and local adapters for Cursor and Claude Code.
 
 ## Status
 
@@ -38,7 +38,7 @@ What works today:
 
 What is still evolving:
 
-- public npm distribution for the CLI
+- the first public npm release process for the CLI
 - Docker-based quick deployment
 - broader automated test coverage
 - richer search, governance, and package lifecycle workflows
@@ -118,23 +118,41 @@ Then try this flow:
 5. Approve the submitted review request
 6. Install the artifact into a local project with the CLI
 
-## Source-Run CLI
+## CLI Installation
 
-The CLI is not published to npm yet. For now, run it from source:
+The CLI is now packaged as a standard npm CLI.
+
+Until the first public npm release is published, you can build and pack it locally:
 
 ```bash
-npm --workspace @agentx/cli run dev -- login --api-url http://localhost:4000 --email alice@internal --password agentx123
+npm install
+npm run pack:cli
+```
 
-npm --workspace @agentx/cli run dev -- publish artifact.example.yaml
-npm --workspace @agentx/cli run dev -- publish artifact.skill.example.yaml
-npm --workspace @agentx/cli run dev -- publish artifact.command.example.yaml
+Then install the generated tarball globally:
 
-npm --workspace @agentx/cli run dev -- reviews
-npm --workspace @agentx/cli run dev -- review <review_id> --decision approved --notes "looks good"
+```bash
+npm install -g ./apps/cli/agentc-0.1.1.tgz
+agentc --help
+```
 
-npm --workspace @agentx/cli run dev -- install github-mcp --agent cursor --dir /path/to/your/project
-npm --workspace @agentx/cli run dev -- install review-playbook --agent cursor --dir /path/to/your/project
-npm --workspace @agentx/cli run dev -- install release-summary --agent cursor --dir /path/to/your/project
+The legacy `agentx` command remains available as a compatibility alias.
+
+For local development, you can still run it from source:
+
+```bash
+npm --workspace agentc run dev -- login --api-url http://localhost:4000 --email alice@internal --password agentx123
+
+npm --workspace agentc run dev -- publish artifact.example.yaml
+npm --workspace agentc run dev -- publish artifact.skill.example.yaml
+npm --workspace agentc run dev -- publish artifact.command.example.yaml
+
+npm --workspace agentc run dev -- reviews
+npm --workspace agentc run dev -- review <review_id> --decision approved --notes "looks good"
+
+npm --workspace agentc run dev -- install github-mcp --agent cursor --dir /path/to/your/project
+npm --workspace agentc run dev -- install review-playbook --agent cursor --dir /path/to/your/project
+npm --workspace agentc run dev -- install release-summary --agent cursor --dir /path/to/your/project
 ```
 
 ## Distribution Model
@@ -294,9 +312,9 @@ npm run dev:cli
 Persistence admin commands:
 
 ```bash
-npm --workspace @agentx/cli run dev -- export --out ./agentx-export.json
-npm --workspace @agentx/cli run dev -- import ./agentx-export.json
-npm --workspace @agentx/cli run dev -- backup --label before-migration
+npm --workspace agentc run dev -- export --out ./agentx-export.json
+npm --workspace agentc run dev -- import ./agentx-export.json
+npm --workspace agentc run dev -- backup --label before-migration
 ```
 
 ## Architecture
@@ -316,14 +334,14 @@ Runtime flow:
 
 ## Limitations
 
-- CLI is currently source-run only
+- CLI packaging is ready, but the first public npm release process is still pending
 - smoke coverage exists, but deeper contract, failure-mode, and adapter compatibility tests are still limited
 - package upload in the Web UI depends on browser directory-upload support
 - the project is still early and APIs may evolve
 
 ## Roadmap
 
-- publish the CLI as a real npm package
+- publish the packaged CLI as a public npm release
 - slim and harden Docker images for production deployment
 - improve search and artifact discovery
 - add stronger package lifecycle rules and provenance metadata

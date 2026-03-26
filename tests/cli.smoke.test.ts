@@ -18,7 +18,7 @@ test("CLI smoke: login, search, publish, install", async (t) => {
   };
 
   const login = await runCommand(
-    ["--workspace", "@agentx/cli", "run", "dev", "--", "login", "--api-url", server.baseUrl, "--email", "alice@internal", "--password", "agentx123"],
+    ["--workspace", "agentc", "run", "dev", "--", "login", "--api-url", server.baseUrl, "--email", "alice@internal", "--password", "agentx123"],
     {
       env: commandEnv
     }
@@ -26,7 +26,7 @@ test("CLI smoke: login, search, publish, install", async (t) => {
   assert.equal(login.exitCode, 0, login.stderr);
   assert.match(login.stdout, /Logged in as alice@internal/);
 
-  const search = await runCommand(["--workspace", "@agentx/cli", "run", "dev", "--", "search", "review"], {
+  const search = await runCommand(["--workspace", "agentc", "run", "dev", "--", "search", "review"], {
     env: commandEnv
   });
   assert.equal(search.exitCode, 0, search.stderr);
@@ -79,14 +79,14 @@ spec:
     "utf8"
   );
 
-  const publish = await runCommand(["--workspace", "@agentx/cli", "run", "dev", "--", "publish", manifestPath], {
+  const publish = await runCommand(["--workspace", "agentc", "run", "dev", "--", "publish", manifestPath], {
     env: commandEnv
   });
   assert.equal(publish.exitCode, 0, publish.stderr);
   assert.match(publish.stdout, new RegExp(`Submitted ${slug}@0\\.1\\.0`));
 
   const install = await runCommand(
-    ["--workspace", "@agentx/cli", "run", "dev", "--", "install", slug, "--agent", "cursor", "--dir", installDir],
+    ["--workspace", "agentc", "run", "dev", "--", "install", slug, "--agent", "cursor", "--dir", installDir],
     {
       env: commandEnv
     }

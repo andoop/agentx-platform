@@ -8,7 +8,7 @@
 
 快速入口：
 [5 分钟体验](#5-分钟体验) |
-[源码运行 CLI](#源码运行-cli) |
+[CLI 安装](#cli-安装) |
 [文档总览](./docs/README.zh-CN.md) |
 [参与贡献](./CONTRIBUTING.zh-CN.md) |
 [安全策略](./SECURITY.zh-CN.md)
@@ -21,7 +21,7 @@ AgentX 是一个面向团队的开源 AI Agent 制品注册与分发平台。
 - `Skill`
 - `Command`
 
-AgentX 当前包含 Web 管理台、Registry API、源码运行版 CLI，以及面向 Cursor 和 Claude Code 的本地适配器。
+AgentX 当前包含 Web 管理台、Registry API、可打包分发的 CLI，以及面向 Cursor 和 Claude Code 的本地适配器。
 
 ## 当前状态
 
@@ -38,7 +38,7 @@ AgentX 目前处于 `alpha` 阶段。
 
 仍在持续完善：
 
-- CLI 的正式 npm 发布
+- CLI 首个公开 npm 版本发布流程
 - 基于 Docker 的快速部署体验
 - 更完整的自动化测试覆盖
 - 更丰富的搜索、治理与资源生命周期能力
@@ -118,23 +118,41 @@ npm run dev:web
 5. 批准刚提交的审核请求
 6. 用 CLI 把 artifact 安装到本地项目
 
-## 源码运行 CLI
+## CLI 安装
 
-CLI 目前还没有发布到 npm，所以暂时需要从源码运行：
+CLI 现在已经按标准 npm CLI 的方式完成打包配置。
+
+在首个公开 npm 版本发布之前，你可以先在本地打包：
 
 ```bash
-npm --workspace @agentx/cli run dev -- login --api-url http://localhost:4000 --email alice@internal --password agentx123
+npm install
+npm run pack:cli
+```
 
-npm --workspace @agentx/cli run dev -- publish artifact.example.yaml
-npm --workspace @agentx/cli run dev -- publish artifact.skill.example.yaml
-npm --workspace @agentx/cli run dev -- publish artifact.command.example.yaml
+然后全局安装生成的 tarball：
 
-npm --workspace @agentx/cli run dev -- reviews
-npm --workspace @agentx/cli run dev -- review <review_id> --decision approved --notes "looks good"
+```bash
+npm install -g ./apps/cli/agentc-0.1.1.tgz
+agentc --help
+```
 
-npm --workspace @agentx/cli run dev -- install github-mcp --agent cursor --dir /path/to/your/project
-npm --workspace @agentx/cli run dev -- install review-playbook --agent cursor --dir /path/to/your/project
-npm --workspace @agentx/cli run dev -- install release-summary --agent cursor --dir /path/to/your/project
+旧的 `agentx` 命令会继续保留，作为兼容别名。
+
+如果你在做本地开发，也仍然可以继续源码运行：
+
+```bash
+npm --workspace agentc run dev -- login --api-url http://localhost:4000 --email alice@internal --password agentx123
+
+npm --workspace agentc run dev -- publish artifact.example.yaml
+npm --workspace agentc run dev -- publish artifact.skill.example.yaml
+npm --workspace agentc run dev -- publish artifact.command.example.yaml
+
+npm --workspace agentc run dev -- reviews
+npm --workspace agentc run dev -- review <review_id> --decision approved --notes "looks good"
+
+npm --workspace agentc run dev -- install github-mcp --agent cursor --dir /path/to/your/project
+npm --workspace agentc run dev -- install review-playbook --agent cursor --dir /path/to/your/project
+npm --workspace agentc run dev -- install release-summary --agent cursor --dir /path/to/your/project
 ```
 
 ## 分发模型
@@ -294,9 +312,9 @@ npm run dev:cli
 持久化管理命令：
 
 ```bash
-npm --workspace @agentx/cli run dev -- export --out ./agentx-export.json
-npm --workspace @agentx/cli run dev -- import ./agentx-export.json
-npm --workspace @agentx/cli run dev -- backup --label before-migration
+npm --workspace agentc run dev -- export --out ./agentx-export.json
+npm --workspace agentc run dev -- import ./agentx-export.json
+npm --workspace agentc run dev -- backup --label before-migration
 ```
 
 ## 架构文档
@@ -316,14 +334,14 @@ npm --workspace @agentx/cli run dev -- backup --label before-migration
 
 ## 当前限制
 
-- CLI 暂时仍需源码运行
+- CLI 已具备标准打包能力，但首个公开 npm 发布流程还未完成
 - 目前已有 smoke 测试，但更深入的契约、异常路径和适配器兼容性测试仍有限
 - Web 端资源包上传依赖浏览器对目录上传的支持
 - 项目仍处于早期阶段，API 仍可能演进
 
 ## 路线图
 
-- 将 CLI 正式发布为 npm 包
+- 将已打包的 CLI 正式发布到 npm
 - 继续瘦身并加固生产 Docker 镜像
 - 改进搜索与资源发现体验
 - 增强资源包生命周期与来源元数据能力

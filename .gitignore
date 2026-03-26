@@ -7,3 +7,7 @@ coverage
 *.tsbuildinfo
 apps/api/.data
 .tmp
+tmp
+test-results
+tmp/cli-package-test
+apps/cli/*.tgz

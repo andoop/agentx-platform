@@ -18,7 +18,7 @@ import { validateCommand } from "./commands/validate.js";
 
 const program = new Command();
 
-program.name("agentx").description("Private AI Agent artifact platform CLI");
+program.name("agentc").description("Private AI Agent artifact platform CLI");
 
 program
   .command("login")
@@ -64,4 +64,11 @@ program
 
 program.command("doctor").action(doctorCommand);
 
-await program.parseAsync(process.argv);
+async function main() {
+  await program.parseAsync(process.argv);
+}
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error);
+  process.exitCode = 1;
+});

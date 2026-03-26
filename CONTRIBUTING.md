@@ -43,7 +43,7 @@ npm run build
 
 - `apps/api`: Fastify Registry API
 - `apps/web`: Next.js management console
-- `apps/cli`: source-run CLI
+- `apps/cli`: packaged CLI
 - `packages/schema`: shared domain model and validation
 - `packages/config`: manifest parsing and template helpers
 - `packages/sdk`: API client

@@ -44,7 +44,7 @@ npm run test
 
 - `apps/api`：Fastify Registry API
 - `apps/web`：Next.js 管理台
-- `apps/cli`：源码运行版 CLI
+- `apps/cli`：可打包分发的 CLI
 - `packages/schema`：共享领域模型与校验
 - `packages/config`：manifest 解析和模板辅助
 - `packages/sdk`：API Client

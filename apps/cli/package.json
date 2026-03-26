@@ -1,23 +1,38 @@
 {
-  "name": "@agentx/cli",
-  "version": "0.1.0",
-  "private": true,
+  "name": "agentc",
+  "version": "0.1.1",
+  "description": "CLI for the AgentX artifact registry",
+  "private": false,
   "type": "module",
   "bin": {
-    "agentx": "dist/index.js"
+    "agentc": "dist/index.cjs",
+    "agentx": "dist/index.cjs"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.cjs",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsup --config tsup.config.ts",
     "dev": "tsx src/index.ts",
+    "pack:local": "npm pack",
+    "prepack": "npm run build",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@agentx/config": "0.1.0",
     "@agentx/sdk": "0.1.0",
-    "commander": "^13.1.0"
-  },
-  "devDependencies": {
     "@types/node": "^22.13.10",
+    "commander": "^13.1.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }
