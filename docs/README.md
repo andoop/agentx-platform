@@ -13,6 +13,7 @@
 - Contributing guide: [`../CONTRIBUTING.md`](../CONTRIBUTING.md)
 - Security policy: [`../SECURITY.md`](../SECURITY.md)
 - Code of conduct: [`../CODE_OF_CONDUCT.md`](../CODE_OF_CONDUCT.md)
+- Release guide: [`releasing.md`](./releasing.md)
 
 ## Architecture
 

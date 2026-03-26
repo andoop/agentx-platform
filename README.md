@@ -9,10 +9,13 @@
 ![GitHub Release](https://img.shields.io/github/v/release/andoop/agentx-platform?color=7c3aed)
 
 Quick Links:
+[Quick Install](#quick-install) |
+[Quick Start](#quick-start) |
 [5-Minute Trial](#5-minute-trial) |
 [CLI Installation](#cli-installation) |
 [Docs Index](./docs/README.md) |
 [Changelog](./CHANGELOG.md) |
+[Release Guide](./docs/releasing.md) |
 [Contributing](./CONTRIBUTING.md) |
 [Security](./SECURITY.md)
 
@@ -25,6 +28,30 @@ It gives you one place to publish, review, approve, version, and install:
 - `Command`
 
 AgentX ships with a Web console, Registry API, packaged CLI tooling, and local adapters for Cursor and Claude Code.
+
+## Quick Install
+
+Install the published CLI from npm:
+
+```bash
+npm install -g agentc
+agentc --help
+```
+
+Compatibility alias:
+
+```bash
+agentx --help
+```
+
+## Quick Start
+
+1. Install the CLI with `npm install -g agentc`
+2. Start the local stack with Docker Compose or run the API and Web app from source
+3. Sign in as `alice@internal`
+4. Publish a `skill`, `command`, or `mcp_server`
+5. Review and approve it
+6. Install it into your local agent runtime with the CLI
 
 ## Status
 

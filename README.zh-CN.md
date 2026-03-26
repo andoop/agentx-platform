@@ -9,10 +9,13 @@
 ![GitHub Release](https://img.shields.io/github/v/release/andoop/agentx-platform?color=7c3aed)
 
 快速入口：
+[快速安装](#快速安装) |
+[快速开始](#快速开始) |
 [5 分钟体验](#5-分钟体验) |
 [CLI 安装](#cli-安装) |
 [文档总览](./docs/README.zh-CN.md) |
 [更新日志](./CHANGELOG.md) |
+[发布指南](./docs/releasing.zh-CN.md) |
 [参与贡献](./CONTRIBUTING.zh-CN.md) |
 [安全策略](./SECURITY.zh-CN.md)
 
@@ -25,6 +28,30 @@ AgentX 是一个面向团队的开源 AI Agent 制品注册与分发平台。
 - `Command`
 
 AgentX 当前包含 Web 管理台、Registry API、可打包分发的 CLI，以及面向 Cursor 和 Claude Code 的本地适配器。
+
+## 快速安装
+
+直接从 npm 安装已发布的 CLI：
+
+```bash
+npm install -g agentc
+agentc --help
+```
+
+兼容别名：
+
+```bash
+agentx --help
+```
+
+## 快速开始
+
+1. 使用 `npm install -g agentc` 安装 CLI
+2. 通过 Docker Compose 启动本地环境，或从源码启动 API 和 Web
+3. 使用 `alice@internal` 登录
+4. 发布一个 `skill`、`command` 或 `mcp_server`
+5. 完成审核和批准
+6. 用 CLI 安装到本地 agent 运行环境
 
 ## 当前状态
 

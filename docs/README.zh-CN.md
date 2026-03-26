@@ -13,6 +13,7 @@
 - 贡献指南：[`../CONTRIBUTING.zh-CN.md`](../CONTRIBUTING.zh-CN.md)
 - 安全策略：[`../SECURITY.zh-CN.md`](../SECURITY.zh-CN.md)
 - 行为准则：[`../CODE_OF_CONDUCT.zh-CN.md`](../CODE_OF_CONDUCT.zh-CN.md)
+- 发布指南：[`releasing.zh-CN.md`](./releasing.zh-CN.md)
 
 ## 架构文档
 

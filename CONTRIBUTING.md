@@ -11,6 +11,7 @@ We are building AgentX as an open-source platform for managing and distributing 
 - Read `README.md` for the product overview and current project status.
 - Read `CODE_OF_CONDUCT.md` before participating in issues, discussions, or pull requests.
 - If you are reporting a security issue, do not open a public issue. Follow `SECURITY.md` instead.
+- If you are preparing a package or project release, follow `docs/releasing.md`.
 
 ## Development Setup
 

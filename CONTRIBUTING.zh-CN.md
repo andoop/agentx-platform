@@ -11,6 +11,7 @@
 - 先阅读 `README.md` 或 `README.zh-CN.md`，了解产品定位和当前项目状态。
 - 在参与 issue、discussion、pull request 之前，请先阅读 `CODE_OF_CONDUCT.md` 或 `CODE_OF_CONDUCT.zh-CN.md`。
 - 如果你要报告安全问题，请不要提交公开 issue，而应遵循 `SECURITY.md` 或 `SECURITY.zh-CN.md`。
+- 如果你要准备发包或项目发布，请参考 `docs/releasing.zh-CN.md`。
 
 ## 开发环境
 
